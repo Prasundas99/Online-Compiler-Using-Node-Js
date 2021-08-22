@@ -18,7 +18,7 @@ if (!fs.existsSync(dirCodes)) {
 
 export const generateFile = async (format, content) => {
   const jobId = uuid(); //creates a random id to uniquely id the execution
-  const filename = `cpp${jobId}.${format}`; //creates a uniquely names file
+  const filename = `${jobId}.${format}`; //creates a uniquely names file
   const filepath = path.join(dirCodes, filename);
 
   await fs.writeFileSync(filepath, content);
