@@ -1,36 +1,17 @@
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import morgan from "morgan";
-import * as dotenv from "dotenv";
-
-import { connectDB } from "./config/db.js";
-import {
-  homeRouter, CompileRouter
-} from "./routes/index.js";
-dotenv.config();
-
-
+const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 5000;
-const environment = process.env.NODE_ENV || "development";
+const Submitrouter = require("./routes/routes");
 
-app.use(morgan("dev"));
+const cors = require("cors");
+
 app.use(cors());
-app.use(helmet());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.static("./client/build"));
 
-//Dbconnection
-process.env.NODE_ENV === "test" ? connectLocalDB() : connectDB();
+app.use("/api/v1", Submitrouter);
 
-// api endpoints
-app.use(homeRouter);
-app.use("/",CompileRouter);
-
-
-app.listen(5000, () => {
-  console.log(`Server running on ${environment} mode at port ${PORT} `);
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server started at port ${port}`);
 });
-
-
